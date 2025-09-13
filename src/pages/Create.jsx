@@ -3,15 +3,20 @@ import { useForm } from "react-hook-form";
 import { nanoid } from "nanoid";
 import { useContext } from "react";
 import { recipecontext } from "../context/RecipeContext";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Create = () => {
+  const navigate = useNavigate();
   const { data, setData } = useContext(recipecontext);
   const { register, handleSubmit, reset } = useForm();
 
   const SubmitHandler = (recipe) => {
     recipe.id = nanoid();
     setData([...data, recipe]);
+    toast.success("Recipe Created Successfully");
     reset();
+    navigate("/recipe");
   }
 
   return (
@@ -34,22 +39,27 @@ const Create = () => {
           type="text"
           placeholder="Recipe Title"
         />
-        <small className="text-red-600">This is how the error shown</small>
+        {/* desc */}
+        <textarea
+          className="border-b outline-0 block "
+          {...register("desc")}
+          placeholder="//Start from here"
+        />
 
         {/* ingredients */}
         <textarea
           className="border-b outline-0 block "
-          {...register("ingredients")}
+          {...register("ingr")}
           placeholder="Write Ingredients seprated by comma"
         />
-        <small className="text-red-600">This is how the error shown</small>
+        
         {/* instructions */}
          <textarea
           className="border-b outline-0 block "
-          {...register("instructions")}
+          {...register("inst")}
           placeholder="Write Instructions seprated by comma"
         />
-        <small className="text-red-600">This is how the error shown</small>
+    
 
         {/* category */}
          <select
