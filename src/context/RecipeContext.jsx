@@ -27,7 +27,7 @@ const RecipeContext = (props) => {
    
       image: "https://cdn.dummyjson.com/recipe-images/1.webp",
      chef: "chandan",
-      category: "chef",
+      category: "dinner",
       desc: "Roll out the pizza dough and spread tomato sauce evenly. Top with slices of fresh mozzarella and fresh basil leaves.",
       
     },
