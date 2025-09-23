@@ -4,10 +4,17 @@ export const recipecontext = createContext(null);
 
 const RecipeContext = (props) => {
   const [data, setData] = useState([]);
+  const [favorites, setFavorites] = useState([]);
 
-  useEffect(() =>{
+  useEffect(() => {
     setData(JSON.parse(localStorage.getItem("recipe")) || []);
+    setFavorites(JSON.parse(localStorage.getItem("favorite")) || []);
   }, []);
+
+  // Persist favorites when they change
+  useEffect(() => {
+    localStorage.setItem("favorite", JSON.stringify(favorites));
+  }, [favorites]);
 
 
 
@@ -42,7 +49,7 @@ const RecipeContext = (props) => {
 
 
   return (
-    <recipecontext.Provider value={{ data, setData }}>
+    <recipecontext.Provider value={{ data, setData, favorites, setFavorites }}>
       {props.children}
     </recipecontext.Provider>
   );

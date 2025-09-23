@@ -23,7 +23,7 @@ const Create = () => {
   }
 
   return (
-    <div className=" flex justify-start items-start p-20">
+    <div className=" flex justify-center items-center p-20">
       <form onSubmit={handleSubmit(SubmitHandler)}>
 
         {/* url */}

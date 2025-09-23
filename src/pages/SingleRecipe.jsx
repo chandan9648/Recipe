@@ -1,19 +1,19 @@
 import React, { useContext, useEffect } from "react";
-import { Navigate, useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import { recipecontext } from "../context/RecipeContext";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 const SingleRecipe = () => {
-   const { data, setData } = useContext(recipecontext);
+  const { data, setData, favorites, setFavorites } = useContext(recipecontext);
   const navigate = useNavigate();
   const params = useParams();
   // Match id regardless of it being number (seed) or string (nanoid)
   const recipe = data.find((r) => String(r.id) === String(params.id));
 
   const { register, handleSubmit, reset } = useForm({
-    defaultValues: {}
+    defaultValues: {},
   });
 
   // When recipe becomes available (after data load), populate form
@@ -31,8 +31,8 @@ const SingleRecipe = () => {
     }
   }, [recipe, reset]);
 
-  const  UpdateHandler = (recipe) => {
-  const index = data.findIndex((r) => String(r.id) === String(params.id));
+  const UpdateHandler = (recipe) => {
+    const index = data.findIndex((r) => String(r.id) === String(params.id));
     const copydata = [...data];
     copydata[index] = { ...copydata[index], ...recipe };
     setData(copydata);
@@ -41,13 +41,28 @@ const SingleRecipe = () => {
     reset();
   };
 
-  
   const DeleteHandler = () => {
     const filterdata = data.filter((r) => r.id !== recipe.id);
     setData(filterdata);
     localStorage.setItem("recipe", JSON.stringify(filterdata));
-    toast.success("Recipe Deleted!");
-  navigate("/recipes");
+    toast.info("Recipe Deleted!");
+    navigate("/recipes");
+  };
+
+  const isFav = favorites.some((f) => String(f.id) === String(recipe.id));
+
+  const FavHandler = () => {
+    if (isFav) return;
+    const updated = [...favorites, recipe];
+    setFavorites(updated);
+    toast.success("Added to Favorites");
+  };
+
+  const UnfavHandler = () => {
+    if (!isFav) return;
+    const updated = favorites.filter((f) => String(f.id) !== String(recipe.id));
+    setFavorites(updated);
+    toast.info("Removed from Favorites");
   };
 
   if (!recipe) {
@@ -59,11 +74,24 @@ const SingleRecipe = () => {
 
   return (
     <div className="flex w-full">
-      <div className="left w-1/2 p-2">
+      <div className="relative cursor-pointer w-1/2 p-5 justify-center items-center ">
+        {isFav ? (
+          <i
+            onClick={UnfavHandler}
+            className="absolute cursor-pointer right-[10%] text-2xl text-red-600 ri-heart-fill"
+            title="Remove from favorites"
+          ></i>
+        ) : (
+            <i
+              onClick={FavHandler}
+              className="absolute right-[10%] cursor-pointer text-2xl text-gray-400 hover:text-red-500 ri-heart-line"
+              title="Add to favorites"
+            ></i>
+        )}
+      
         <h1 className="text-4xl font-black">{recipe.title}</h1>
         <img className="h-[20vh]" src={recipe.image} alt="image" />
         <p className="text-sm my-2">{recipe.desc}</p>
-       
       </div>
 
       {/* form */}
@@ -72,7 +100,6 @@ const SingleRecipe = () => {
         <input
           className="border-b outline-0 block"
           {...register("image")}
-      
           type="url"
           placeholder="Enter Image URL"
         />
@@ -82,7 +109,6 @@ const SingleRecipe = () => {
         <input
           className="border-b outline-0 block"
           {...register("title")}
- 
           type="text"
           placeholder="Recipe Title"
         />
@@ -90,7 +116,6 @@ const SingleRecipe = () => {
         <input
           className="border-b outline-0 block"
           {...register("chef")}
-     
           type="text"
           placeholder="Chef Name"
         />
@@ -98,7 +123,6 @@ const SingleRecipe = () => {
         <textarea
           className="border-b outline-0 block "
           {...register("desc")}
-    
           placeholder="//Start from here"
         />
 
@@ -117,11 +141,7 @@ const SingleRecipe = () => {
         />
 
         {/* category */}
-        <select
-          className="border-b outline-0 block "
-          {...register("category")}
-       
-        >
+        <select className="border-b outline-0 block " {...register("category")}>
           <option className="bg-red-300 text-white" value="">
             Select Category
           </option>
