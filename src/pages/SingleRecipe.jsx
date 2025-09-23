@@ -55,14 +55,14 @@ const SingleRecipe = () => {
     if (isFav) return;
     const updated = [...favorites, recipe];
     setFavorites(updated);
-    toast.success("Added to Favorites");
+    // toast.success("Added to Favorites");
   };
 
   const UnfavHandler = () => {
     if (!isFav) return;
     const updated = favorites.filter((f) => String(f.id) !== String(recipe.id));
     setFavorites(updated);
-    toast.info("Removed from Favorites");
+    // toast.info("Removed from Favorites");
   };
 
   if (!recipe) {
