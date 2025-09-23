@@ -21,7 +21,7 @@ const SingleRecipe = () => {
     }
   });
 
-  const SubmitHandler = (recipe) => {
+  const UpdateHandler = (recipe) => {
     const index = data.findIndex((r) => parseInt(params.id) === r.id);
     const copydata = [...data];
     copydata[index] = { ...copydata[index], ...recipe };
@@ -48,7 +48,7 @@ const SingleRecipe = () => {
       </div>
 
       {/* form */}
-      <form className="w-1/2 p-2" onSubmit={handleSubmit(SubmitHandler)}>
+      <form className="w-1/2 p-2" onSubmit={handleSubmit(UpdateHandler)}>
         {/* url */}
         <input
           className="border-b outline-0 block"
