@@ -12,20 +12,21 @@ const SingleRecipe = () => {
   const recipe = data.find((recipe) => parseInt(params.id) === recipe.id);
 
   const { register, handleSubmit, reset } = useForm({
-    defaultValues: {
-      title: recipe.title,
-      image: recipe.image,
-      desc: recipe.desc,
-      chef: recipe.chef,
-      ingr: recipe.ingr,
-    }
+    defaultValues:  recipe ? {
+      title: recipe?.title,
+      image: recipe?.image,
+      desc: recipe?.desc,
+      chef: recipe?.chef,
+      ingr: recipe?.ingr,
+    } : {},
   });
 
-  const UpdateHandler = (recipe) => {
+  const  UpdateHandler = (recipe) => {
     const index = data.findIndex((r) => parseInt(params.id) === r.id);
     const copydata = [...data];
     copydata[index] = { ...copydata[index], ...recipe };
     setData(copydata);
+    localStorage.setItem("recipe", JSON.stringify(copydata));
     toast.success("Recipe Updated!");
     reset();
   };
@@ -34,6 +35,7 @@ const SingleRecipe = () => {
   const DeleteHandler = () => {
     const filterdata = data.filter((r) => r.id !== recipe.id);
     setData(filterdata);
+    localStorage.setItem("recipe", JSON.stringify(filterdata));
     toast.success("Recipe Deleted!");
     navigate("/recipe");
   };
