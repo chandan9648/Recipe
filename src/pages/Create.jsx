@@ -19,7 +19,7 @@ const Create = () => {
     localStorage.setItem("recipe", JSON.stringify(copydata));
     toast.success("Recipe Created Successfully");
     reset();
-    navigate("/recipe");
+  navigate("/recipes");
   }
 
   return (

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import { recipecontext } from "../context/RecipeContext";
 import { toast } from "react-toastify";
@@ -9,20 +9,30 @@ const SingleRecipe = () => {
    const { data, setData } = useContext(recipecontext);
   const navigate = useNavigate();
   const params = useParams();
-  const recipe = data.find((recipe) => parseInt(params.id) === recipe.id);
+  // Match id regardless of it being number (seed) or string (nanoid)
+  const recipe = data.find((r) => String(r.id) === String(params.id));
 
   const { register, handleSubmit, reset } = useForm({
-    defaultValues:  recipe ? {
-      title: recipe?.title,
-      image: recipe?.image,
-      desc: recipe?.desc,
-      chef: recipe?.chef,
-      ingr: recipe?.ingr,
-    } : {},
+    defaultValues: {}
   });
 
+  // When recipe becomes available (after data load), populate form
+  useEffect(() => {
+    if (recipe) {
+      reset({
+        title: recipe.title || "",
+        image: recipe.image || "",
+        desc: recipe.desc || "",
+        chef: recipe.chef || "",
+        ingr: recipe.ingr || "",
+        inst: recipe.inst || "",
+        category: recipe.category || "",
+      });
+    }
+  }, [recipe, reset]);
+
   const  UpdateHandler = (recipe) => {
-    const index = data.findIndex((r) => parseInt(params.id) === r.id);
+  const index = data.findIndex((r) => String(r.id) === String(params.id));
     const copydata = [...data];
     copydata[index] = { ...copydata[index], ...recipe };
     setData(copydata);
@@ -37,10 +47,17 @@ const SingleRecipe = () => {
     setData(filterdata);
     localStorage.setItem("recipe", JSON.stringify(filterdata));
     toast.success("Recipe Deleted!");
-    navigate("/recipe");
+  navigate("/recipes");
   };
 
-  return recipe ? (
+  if (!recipe) {
+    // Data loaded but recipe not found
+    if (data.length > 0) return <div className="p-4">Recipe not found.</div>;
+    // Still loading localStorage data
+    return <div className="p-4">Loading...</div>;
+  }
+
+  return (
     <div className="flex w-full">
       <div className="left w-1/2 p-2">
         <h1 className="text-4xl font-black">{recipe.title}</h1>
@@ -131,8 +148,6 @@ const SingleRecipe = () => {
         </button>
       </form>
     </div>
-  ) : (
-    "Loading..."
   );
 };
 
