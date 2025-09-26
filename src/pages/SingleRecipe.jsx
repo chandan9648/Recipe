@@ -42,6 +42,7 @@ const SingleRecipe = () => {
   };
 
   const DeleteHandler = () => {
+    if (!confirm("Delete this recipe?")) return;
     const filterdata = data.filter((r) => r.id !== recipe.id);
     setData(filterdata);
     localStorage.setItem("recipe", JSON.stringify(filterdata));
@@ -92,6 +93,34 @@ const SingleRecipe = () => {
         <h1 className="text-4xl font-black">{recipe.title}</h1>
         <img className="h-[20vh]" src={recipe.image} alt="image" />
         <p className="text-sm my-2">{recipe.desc}</p>
+
+        {/* details */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+          <div>
+            <h4 className="font-semibold mb-1">Ingredients</h4>
+            <ul className="list-disc list-inside text-sm">
+              {(recipe.ingr || "")
+                .split(",")
+                .map((i) => i.trim())
+                .filter(Boolean)
+                .map((i, idx) => (
+                  <li key={idx}>{i}</li>
+                ))}
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-semibold mb-1">Instructions</h4>
+            <ol className="list-decimal list-inside text-sm space-y-1">
+              {(recipe.inst || "")
+                .split(",")
+                .map((i) => i.trim())
+                .filter(Boolean)
+                .map((i, idx) => (
+                  <li key={idx}>{i}</li>
+                ))}
+            </ol>
+          </div>
+        </div>
       </div>
 
       {/* form */}
