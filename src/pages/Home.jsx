@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useContext, useMemo } from "react";
-import { recipecontext } from "../context/RecipeContext";
+import { recipecontext } from "../context/recipecontext";
 import RecipeCard from "../Components/RecipeCard";
 
 const Home = () => {
@@ -37,7 +37,7 @@ const Home = () => {
           ].map((c) => (
             <Link
               key={c.value}
-              to={`/recipes`}
+              to={`/recipes?cat=${c.value}`}
               className="inline-flex items-center gap-2 bg-white/80 text-rose-700 px-3 py-1.5 rounded-full hover:bg-white"
             >
               <i className={`${c.icon}`}></i> {c.label}

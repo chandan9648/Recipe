@@ -1,6 +1,5 @@
-import React, { createContext, useEffect, useState, } from "react";
-
-export const recipecontext = createContext(null);
+import React, { useEffect, useState } from "react";
+import { recipecontext as RECIPECONTEXT } from "./recipecontext";
 
 const RecipeContext = (props) => {
   const [data, setData] = useState([]);
@@ -49,9 +48,9 @@ const RecipeContext = (props) => {
 
 
   return (
-    <recipecontext.Provider value={{ data, setData, favorites, setFavorites }}>
+    <RECIPECONTEXT.Provider value={{ data, setData, favorites, setFavorites }}>
       {props.children}
-    </recipecontext.Provider>
+    </RECIPECONTEXT.Provider>
   );
 };
 
