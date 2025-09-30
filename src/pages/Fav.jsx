@@ -7,6 +7,8 @@ const Fav = () => {
   const { favorites = [], setFavorites } = useContext(recipecontext);
 
   const clearAll = () => setFavorites([]);
+  const removeFromFav = (id) =>
+    setFavorites((prev) => prev.filter((r) => r?.id !== id));
 
   return (
     <div className="p-6">
@@ -25,7 +27,20 @@ const Fav = () => {
       {favorites.length > 0 ? (
         <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {favorites.map((recipe) => (
-            <RecipeCard recipe={recipe} key={recipe.id} />
+            <div key={recipe.id} className="relative group">
+              <RecipeCard recipe={recipe} />
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  removeFromFav(recipe.id);
+                }}
+                title="Remove from favorites"
+                className="absolute top-50 right-2 z-20 text-xs bg-red-600 cursor-pointer  text-white px-2 py-1 rounded opacity-90 group-hover:opacity-100"
+              >
+                Remove
+              </button>
+            </div>
           ))}
         </div>
       ) : (
