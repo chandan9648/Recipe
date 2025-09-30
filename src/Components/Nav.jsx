@@ -1,12 +1,20 @@
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 const Nav = () => {
+  const [open, setOpen] = useState(false);
+
+  const closeMenu = () => setOpen(false);
+
   return (
     <nav className="sticky top-0 z-50 w-full backdrop-blur bg-red-300/80 shadow-sm">
       <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
-        <NavLink to="/" className="font-extrabold text-lg text-black">Recipe<span className="text-red-700">Box</span></NavLink>
+        <NavLink to="/" className="font-extrabold text-lg text-black" onClick={closeMenu}>
+          Recipe<span className="text-red-700">Box</span>
+        </NavLink>
 
-        <div className="flex gap-6 text-black font-semibold">
+        {/* Desktop links */}
+        <div className="hidden md:flex gap-6 text-black font-semibold">
           <NavLink
             className={({ isActive }) =>
               `hover:text-red-700 ${isActive ? "text-red-700 underline underline-offset-4" : ""}`
@@ -44,6 +52,72 @@ const Nav = () => {
               `hover:text-red-700 ${isActive ? "text-red-700 underline underline-offset-4" : ""}`
             }
             to="/fav"
+          >
+            <i className="ri-heart-3-line mr-1"></i> Favorites
+          </NavLink>
+        </div>
+
+        {/* Mobile hamburger */}
+        <button
+          type="button"
+          className="md:hidden p-2 rounded hover:bg-red-200/60 text-black"
+          onClick={() => setOpen((s) => !s)}
+          aria-label="Toggle menu"
+          aria-expanded={open}
+          aria-controls="mobile-menu"
+        >
+          <i className={`ri-${open ? "close" : "menu"}-line text-2xl`}></i>
+        </button>
+      </div>
+
+      {/* Mobile menu panel */}
+      <div
+        id="mobile-menu"
+        className={`${open ? "block" : "hidden"} md:hidden border-t border-red-200/60 bg-red-100/90 backdrop-blur-sm`}
+      >
+        <div className="max-w-6xl mx-auto px-4 py-3 flex flex-col gap-3 text-black font-semibold">
+          <NavLink
+            className={({ isActive }) =>
+              `py-1 ${isActive ? "text-red-700 underline underline-offset-4" : "hover:text-red-700"}`
+            }
+            to="/"
+            onClick={closeMenu}
+          >
+            <i className="ri-home-line mr-1"></i> Home
+          </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              `py-1 ${isActive ? "text-red-700 underline underline-offset-4" : "hover:text-red-700"}`
+            }
+            to="/recipes"
+            onClick={closeMenu}
+          >
+            <i className="ri-restaurant-2-line mr-1"></i> Recipes
+          </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              `py-1 ${isActive ? "text-red-700 underline underline-offset-4" : "hover:text-red-700"}`
+            }
+            to="/about"
+            onClick={closeMenu}
+          >
+            <i className="ri-information-line mr-1"></i> About
+          </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              `py-1 ${isActive ? "text-red-700 underline underline-offset-4" : "hover:text-red-700"}`
+            }
+            to="/create"
+            onClick={closeMenu}
+          >
+            <i className="ri-add-line mr-1"></i> Create
+          </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              `py-1 ${isActive ? "text-red-700 underline underline-offset-4" : "hover:text-red-700"}`
+            }
+            to="/fav"
+            onClick={closeMenu}
           >
             <i className="ri-heart-3-line mr-1"></i> Favorites
           </NavLink>
