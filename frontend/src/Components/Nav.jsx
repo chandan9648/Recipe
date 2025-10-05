@@ -7,8 +7,8 @@ const Nav = () => {
   const closeMenu = () => setOpen(false);
 
   return (
-    <nav className="sticky top-0 z-50 w-full backdrop-blur bg-red-300/80 shadow-sm">
-      <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
+    <nav className="sticky top-0 z-50 w-full backdrop-blur bg-red-300/80 shadow-sm ">
+      <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between ">
         <NavLink to="/" className="font-extrabold text-lg text-black" onClick={closeMenu}>
           Recipe<span className="text-red-700">Box</span>
         </NavLink>
