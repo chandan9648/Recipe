@@ -1,33 +1,33 @@
 import axios from "axios";
 
-
+// Shared API client for backend
 const instance = axios.create({
-    baseURL: 'https://fakestoreapi.com/',
-    withCredentials: false,
-
+  baseURL: "http://localhost:3000/api/",
+  withCredentials: true,
 });
 
 //interceptors
 
 // Add a request interceptor
 instance.interceptors.request.use(
-    function (config) {
-console.log("request----->", config);
+  function (config) {
+    // console.log("request----->", config?.method, config?.url);
     return config;
-  }, 
+  },
   function (error) {
-
     return Promise.reject(error);
-  });
+  }
+);
 
 // Add a response interceptor
 instance.interceptors.response.use(
-    function (response) {
-   console.log("response---->", response);
+  function (response) {
+    // console.log("response---->", response?.status, response?.config?.url);
     return response;
-  }, function (error) {
-    
+  },
+  function (error) {
     return Promise.reject(error);
-  });
+  }
+);
 
 export default instance;

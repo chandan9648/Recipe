@@ -4,9 +4,11 @@ import { recipecontext } from "../context/recipecontext";
 import RecipeCard from "../Components/RecipeCard";
 import { Link } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
+import { useAuth } from "../context/auth";
 
 const Recipe = () => {
   const { data } = useContext(recipecontext);
+  const { isSeller } = useAuth() || {};
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [q, setQ] = useState("");
@@ -77,7 +79,9 @@ const Recipe = () => {
           >
             Reset
           </button> */}
-          <Link to="/create" className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">+ Add Recipe</Link>
+          {isSeller && (
+            <Link to="/create" className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">+ Add Recipe</Link>
+          )}
         </div>
       </div>
 
@@ -90,7 +94,9 @@ const Recipe = () => {
       ) : (
         <div className="text-center py-20">
           <p className="mb-4">No recipes found.</p>
-          <Link to="/create" className="inline-block bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Create your first recipe</Link>
+          {isSeller && (
+            <Link to="/create" className="inline-block bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Create your first recipe</Link>
+          )}
         </div>
       )}
     </div>

@@ -1,10 +1,29 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../context/auth";
+import { useNavigate } from "react-router-dom";
+import api from "../utils/axios.jsx";
 
 const Nav = () => {
   const [open, setOpen] = useState(false);
+  const { isSeller, user, token, setToken, setUser } = useAuth() || {};
+  const navigate = useNavigate();
 
   const closeMenu = () => setOpen(false);
+  const isLoggedIn = !!(token || user);
+  const handleLogout = async () => {
+    try {
+      await api.post('auth/logout', {}, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
+    } catch {
+      // ignore network errors for UX, we'll still clear client state
+    }
+    setToken && setToken(null);
+    setUser && setUser(null);
+    closeMenu();
+    navigate('/');
+  }
 
   return (
     <nav className="sticky top-0 z-50 w-full backdrop-blur bg-red-300/80 shadow-sm ">
@@ -39,6 +58,7 @@ const Nav = () => {
           >
             <i className="ri-information-line mr-1"></i> About
           </NavLink>
+          {isSeller && (
           <NavLink
             className={({ isActive }) =>
               `hover:text-red-700 ${isActive ? "text-red-700 underline underline-offset-4" : ""}`
@@ -47,6 +67,7 @@ const Nav = () => {
           >
             <i className="ri-add-line mr-1"></i> Create
           </NavLink>
+          )}
           <NavLink
             className={({ isActive }) =>
               `hover:text-red-700 ${isActive ? "text-red-700 underline underline-offset-4" : ""}`
@@ -56,14 +77,23 @@ const Nav = () => {
             <i className="ri-heart-3-line mr-1"></i> Favorites
           </NavLink>
 
-           <NavLink
-            className={({ isActive }) =>
-              `hover:text-red-700 ${isActive ? "text-red-700 underline underline-offset-4" : ""}`
-            }
-            to="/login"
-          >
-            <i className="ri-login-box-line mr-1"></i> Login
-          </NavLink>
+          {!isLoggedIn ? (
+            <NavLink
+              className={({ isActive }) =>
+                `hover:text-red-700 ${isActive ? "text-red-700 underline underline-offset-4" : ""}`
+              }
+              to="/login"
+            >
+              <i className="ri-login-box-line mr-1"></i> Login
+            </NavLink>
+          ) : (
+            <button
+              onClick={handleLogout}
+              className="hover:text-red-700 cursor-pointer"
+            >
+              <i className="ri-logout-box-line mr-1"></i> Logout
+            </button>
+          )}
         </div>
 
         {/* Mobile hamburger */}
@@ -112,6 +142,7 @@ const Nav = () => {
           >
             <i className="ri-information-line mr-1"></i> About
           </NavLink>
+          {isSeller && (
           <NavLink
             className={({ isActive }) =>
               `py-1 ${isActive ? "text-red-700 underline underline-offset-4" : "hover:text-red-700"}`
@@ -121,6 +152,7 @@ const Nav = () => {
           >
             <i className="ri-add-line mr-1"></i> Create
           </NavLink>
+          )}
           <NavLink
             className={({ isActive }) =>
               `py-1 ${isActive ? "text-red-700 underline underline-offset-4" : "hover:text-red-700"}`
@@ -130,15 +162,24 @@ const Nav = () => {
           >
             <i className="ri-heart-3-line mr-1"></i> Favorites
           </NavLink>
-          <NavLink
-            className={({ isActive }) =>
-              `py-1 ${isActive ? "text-red-700 underline underline-offset-4" : "hover:text-red-700"}`
-            }
-            to="/login"
-            onClick={closeMenu}
-          >
-            <i className="ri-login-box-line mr-1"></i> Login
-          </NavLink>
+          {!isLoggedIn ? (
+            <NavLink
+              className={({ isActive }) =>
+                `py-1 ${isActive ? "text-red-700 underline underline-offset-4" : "hover:text-red-700"}`
+              }
+              to="/login"
+              onClick={closeMenu}
+            >
+              <i className="ri-login-box-line mr-1"></i> Login
+            </NavLink>
+          ) : (
+            <button
+              onClick={handleLogout}
+              className="text-left py-1 hover:text-red-700 cursor-pointer"
+            >
+              <i className="ri-logout-box-line mr-1 "></i> Logout
+            </button>
+          )}
         </div>
       </div>
     </nav>

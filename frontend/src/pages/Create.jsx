@@ -5,9 +5,11 @@ import { useContext } from "react";
 import { recipecontext } from "../context/recipecontext";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/auth";
 
 const Create = () => {
   const navigate = useNavigate();
+  const { isSeller } = useAuth() || {};
   const { data, setData } = useContext(recipecontext);
   const {
     register,
@@ -49,6 +51,9 @@ const Create = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-6 md:p-10">
+      {!isSeller && (
+        <div className="bg-yellow-200 text-black p-3 rounded mb-4">You don't have permission to create recipes.</div>
+      )}
       <h1 className="text-2xl font-bold mb-6">Create a New Recipe</h1>
 
       <div className="grid gap-6 md:grid-cols-2">
