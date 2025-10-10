@@ -55,6 +55,15 @@ const Nav = () => {
           >
             <i className="ri-heart-3-line mr-1"></i> Favorites
           </NavLink>
+
+           <NavLink
+            className={({ isActive }) =>
+              `hover:text-red-700 ${isActive ? "text-red-700 underline underline-offset-4" : ""}`
+            }
+            to="/login"
+          >
+            <i className="ri-login-box-line mr-1"></i> Login
+          </NavLink>
         </div>
 
         {/* Mobile hamburger */}
@@ -120,6 +129,15 @@ const Nav = () => {
             onClick={closeMenu}
           >
             <i className="ri-heart-3-line mr-1"></i> Favorites
+          </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              `py-1 ${isActive ? "text-red-700 underline underline-offset-4" : "hover:text-red-700"}`
+            }
+            to="/login"
+            onClick={closeMenu}
+          >
+            <i className="ri-login-box-line mr-1"></i> Login
           </NavLink>
         </div>
       </div>
