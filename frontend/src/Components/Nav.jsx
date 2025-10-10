@@ -68,14 +68,16 @@ const Nav = () => {
             <i className="ri-add-line mr-1"></i> Create
           </NavLink>
           )}
-          <NavLink
-            className={({ isActive }) =>
-              `hover:text-red-700 ${isActive ? "text-red-700 underline underline-offset-4" : ""}`
-            }
-            to="/fav"
-          >
-            <i className="ri-heart-3-line mr-1"></i> Favorites
-          </NavLink>
+          {!isSeller && (
+            <NavLink
+              className={({ isActive }) =>
+                `hover:text-red-700 ${isActive ? "text-red-700 underline underline-offset-4" : ""}`
+              }
+              to="/fav"
+            >
+              <i className="ri-heart-3-line mr-1"></i> Favorites
+            </NavLink>
+          )}
 
           {!isLoggedIn ? (
             <NavLink
@@ -153,15 +155,17 @@ const Nav = () => {
             <i className="ri-add-line mr-1"></i> Create
           </NavLink>
           )}
-          <NavLink
-            className={({ isActive }) =>
-              `py-1 ${isActive ? "text-red-700 underline underline-offset-4" : "hover:text-red-700"}`
-            }
-            to="/fav"
-            onClick={closeMenu}
-          >
-            <i className="ri-heart-3-line mr-1"></i> Favorites
-          </NavLink>
+          {!isSeller && (
+            <NavLink
+              className={({ isActive }) =>
+                `py-1 ${isActive ? "text-red-700 underline underline-offset-4" : "hover:text-red-700"}`
+              }
+              to="/fav"
+              onClick={closeMenu}
+            >
+              <i className="ri-heart-3-line mr-1"></i> Favorites
+            </NavLink>
+          )}
           {!isLoggedIn ? (
             <NavLink
               className={({ isActive }) =>

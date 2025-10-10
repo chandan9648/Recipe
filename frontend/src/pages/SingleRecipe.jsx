@@ -4,11 +4,13 @@ import { recipecontext } from "../context/recipecontext";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/auth";
 
 const SingleRecipe = () => {
   const { data, setData, favorites, setFavorites } = useContext(recipecontext);
   const navigate = useNavigate();
   const params = useParams();
+  const { isSeller } = useAuth() || {};
   // Match id regardless of it being number (seed) or string (nanoid)
   const recipe = data.find((r) => String(r.id) === String(params.id));
 
@@ -79,18 +81,20 @@ const SingleRecipe = () => {
     <div className="w-full max-w-6xl mx-auto p-4 md:p-6 grid gap-6 md:grid-cols-2">
       {/* Left: Details */}
       <div className="relative bg-white/10 rounded-lg p-5">
-        {isFav ? (
-          <i
-            onClick={UnfavHandler}
-            className="absolute top-4 right-4 cursor-pointer text-2xl text-red-600 ri-heart-fill"
-            title="Remove from favorites"
-          ></i>
-        ) : (
+        {!isSeller && (
+          isFav ? (
             <i
-              onClick={FavHandler}
-              className="absolute top-4 right-4 cursor-pointer text-2xl text-gray-200 hover:text-red-500 ri-heart-line"
-              title="Add to favorites"
+              onClick={UnfavHandler}
+              className="absolute top-4 right-4 cursor-pointer text-2xl text-red-600 ri-heart-fill"
+              title="Remove from favorites"
             ></i>
+          ) : (
+              <i
+                onClick={FavHandler}
+                className="absolute top-4 right-4 cursor-pointer text-2xl text-gray-200 hover:text-red-500 ri-heart-line"
+                title="Add to favorites"
+              ></i>
+          )
         )}
 
         <div className="relative">
@@ -135,7 +139,8 @@ const SingleRecipe = () => {
         </div>
       </div>
 
-      {/* Right: Edit Form */}
+      {/* Right: Edit Form (seller-only) */}
+      {isSeller && (
       <form className="bg-white/10 rounded-lg p-5" onSubmit={handleSubmit(UpdateHandler)}>
         <div className="grid gap-3">
           <div>
@@ -222,6 +227,7 @@ const SingleRecipe = () => {
           </div>
         </div>
       </form>
+      )}
     </div>
   );
 };
