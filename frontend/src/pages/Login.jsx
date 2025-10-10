@@ -2,10 +2,10 @@ import React from 'react'
 
 const Login = () => {
   return (
-    <div>
+    <div className='boder  justify-center items-center'>
       <h1>Login</h1>
       <form>
-        <div>
+        <div className='form-group'>
           <label htmlFor="email">Email</label>
           <input type="email" id="email" name="email" required />
         </div>
