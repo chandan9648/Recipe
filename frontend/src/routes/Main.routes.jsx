@@ -9,6 +9,7 @@ import PageNotFound from "../pages/PageNotFound";
 import Login from "../pages/Login";
 import { Navigate } from "react-router-dom";
 import Fav from "../pages/Fav";
+import Register from "../pages/Register";
 
 const MainRoutes = () => {
   return (
@@ -24,6 +25,7 @@ const MainRoutes = () => {
         <Route path="/about" element={<About />} />
         <Route path="/fav" element={<Fav />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </div>
