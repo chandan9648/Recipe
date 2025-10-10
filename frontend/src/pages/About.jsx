@@ -1,8 +1,10 @@
 
 
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/auth";
 
 const About = () => {
+  const { isSeller } = useAuth() || {};
   return (
     <div className="max-w-6xl mx-auto px-4 py-12 text-white">
       {/* Hero */}
@@ -14,7 +16,9 @@ const About = () => {
         </p>
         <div className="mt-6 flex gap-3 justify-center">
           <Link to="/recipes" className="bg-white text-rose-600 font-semibold px-4 py-2 rounded hover:bg-gray-100">Browse Recipes</Link>
-          <Link to="/create" className="bg-rose-600 text-white font-semibold px-4 py-2 rounded hover:bg-rose-700">Create Recipe</Link>
+          {isSeller && (
+            <Link to="/create" className="bg-rose-600 text-white font-semibold px-4 py-2 rounded hover:bg-rose-700">Create Recipe</Link>
+          )}
         </div>
       </section>
 

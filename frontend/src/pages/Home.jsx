@@ -2,9 +2,11 @@ import { Link } from "react-router-dom";
 import { useContext, useMemo } from "react";
 import { recipecontext } from "../context/recipecontext";
 import RecipeCard from "../Components/RecipeCard";
+import { useAuth } from "../context/auth";
 
 const Home = () => {
   const { data = [] } = useContext(recipecontext);
+  const { isSeller } = useAuth() || {};
   const recent = useMemo(() => data.slice(-4).reverse(), [data]);
   return (
     <>
@@ -16,7 +18,9 @@ const Home = () => {
             <p className="mt-4 text-white/90">Create your own recipes, edit them anytime, and mark favorites to find them fast.</p>
             <div className="mt-6 flex gap-3">
               <Link to="/recipes" className="bg-white text-rose-600 font-semibold px-4 py-2 rounded hover:bg-gray-100">Browse Recipes</Link>
-              <Link to="/create" className="bg-rose-600 text-white font-semibold px-4 py-2 rounded hover:bg-rose-700">Create Recipe</Link>
+              {isSeller && (
+                <Link to="/create" className="bg-rose-600 text-white font-semibold px-4 py-2 rounded hover:bg-rose-700">Create Recipe</Link>
+              )}
             </div>
           </div>
           <div className="hidden md:block">
@@ -102,8 +106,8 @@ const Home = () => {
             <h3 className="font-bold text-white mb-2">Explore</h3>
             <ul className="space-y-1 text-sm">
               <li><Link className="hover:underline" to="/recipes">All Recipes</Link></li>
-              <li><Link className="hover:underline" to="/create">Create Recipe</Link></li>
-              <li><Link className="hover:underline" to="/fav">Favorites</Link></li>
+              {isSeller && <li><Link className="hover:underline" to="/create">Create Recipe</Link></li>}
+              {!isSeller && <li><Link className="hover:underline" to="/fav">Favorites</Link></li>}
               <li><Link className="hover:underline" to="/about">About</Link></li>
             </ul>
           </div>
