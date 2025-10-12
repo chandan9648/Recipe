@@ -28,7 +28,7 @@ const Register = () => {
   toast.success(res.data.message);
   if (setToken) setToken(res.data.token);
   if (setUser) setUser(res.data.user);
-  navigate("/");
+  navigate("/login");
 
   }catch (error) {
       console.error("Registration error:", error);
